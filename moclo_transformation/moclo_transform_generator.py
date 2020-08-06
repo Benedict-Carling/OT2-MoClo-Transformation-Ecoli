@@ -11,20 +11,38 @@ import yaml
 # Constants
 #################################################################################################################
 
-CONFIG_PATH = "data/settings.yaml"
+#CONFIG_PATH = "data/settings.yaml"
 
 #################################################################################################################
 # Main function of script
 #################################################################################################################
 
-def main():
+# all variables for the function
+#config = {'output_folder_path': 'output'}
+#combinations_limit = 'single'
+#dna_plate_map_filename = '/Users/Benedict/Documents/MoClo/OT2-MoClo-Transformation-Ecoli/examples/input_DNA_plate_csv/input-dna-map.csv'
+#combinations_filename = '/Users/Benedict/Documents/MoClo/OT2-MoClo-Transformation-Ecoli/examples/combination_to_make_csv/combination-to-make-72.csv'
+#moclo_function('output','single','/Users/Benedict/Documents/MoClo/OT2-MoClo-Transformation-Ecoli/examples/input_DNA_plate_csv/input-dna-map.csv','/Users/Benedict/Documents/MoClo/OT2-MoClo-Transformation-Ecoli/examples/combination_to_make_csv/combination-to-make-72.csv')
+def moclo_function(output_folder,single_or_triplicate,dna_plate_map,combinations_file):
 
 	###### GETTING USER INPUT ######
 
-	config = get_config(CONFIG_PATH)
-	combinations_limit = ask_single_or_triplicate()
-	dna_plate_map_filename = ask_dna_plate_map_filename()
-	combinations_filename = ask_combinations_filename()
+	#config = get_config(CONFIG_PATH)
+	# ^ returns config just a read of setting.yaml hopefull try to set to string and still work
+	config = {'output_folder_path': output_folder,
+          	  'protocol_template_path': 'data/moclo_transform_template.py'}
+
+	#combinations_limit = ask_single_or_triplicate()
+	# ^ return the string either 'single' or triplet
+	combinations_limit = single_or_triplicate
+
+	#dna_plate_map_filename = ask_dna_plate_map_filename()
+	# ^ return string of full disk file path of dna plate map
+	dna_plate_map_filename = dna_plate_map
+	
+	#combinations_filename = ask_combinations_filename()
+	# ^ returns string of full disk path of combinations file
+	combinations_filename = combinations_file
 
 	# Load in CSV files as a dict containing lists of lists.
 	dna_plate_map_dict = generate_plate_maps(dna_plate_map_filename)
@@ -72,6 +90,7 @@ def ask_dna_plate_map_filename():
 
 	# Open dialog boxes asking user for dna plate map.
 	dna_plate_map_filename = filedialog.askopenfilename(title = "Select DNA plate map", filetypes = (("CSV files","*.CSV"),("all files","*.*")))
+	print(dna_plate_map_filename)
 	
 	return dna_plate_map_filename
 
@@ -82,7 +101,7 @@ def ask_combinations_filename():
 
 	# Open dialog boxes asking user for combinations file.
 	combinations_filename = filedialog.askopenfilename(title = "Select file containing combinations to make.", filetypes = (("CSV files","*.CSV"),("all files","*.*")))
-	
+	print(combinations_filename)
 	return combinations_filename
 
 def generate_plate_maps(filename):
